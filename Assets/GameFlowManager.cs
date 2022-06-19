@@ -1,5 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 using UnityEngine;
 using TMPro;
 
@@ -10,6 +10,9 @@ public class GameFlowManager : MonoBehaviour
 
     [SerializeField]
     Animator UIanim;
+
+    [SerializeField]
+    int sceneIndex;
 
     [SerializeField]
     int winCon = 5;
@@ -23,8 +26,22 @@ public class GameFlowManager : MonoBehaviour
     public static OnScore Scored;
     void Start()
     {
+        AudioManager.instance.Play("Music");
         ballManager = FindObjectOfType<BallManager>();
         Scored = SetScore;
+    }
+
+    private void Update()
+    {
+        ReloadScene();
+    }
+
+    void ReloadScene()
+    {
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            SceneManager.LoadScene(sceneIndex);
+        }
     }
 
     void SetScore(bool isRight)
@@ -32,8 +49,9 @@ public class GameFlowManager : MonoBehaviour
         if (isRight)
         {
             rightScoreCount++;
-            if (leftScoreCount > winCon || rightScoreCount > winCon)
+            if (rightScoreCount > winCon)
             {
+                Win();
                 UIanim.SetBool("Win", true);
                 win.text = nameLeft.text + " WON!!";
                 ballManager.RestartPos();
@@ -50,8 +68,9 @@ public class GameFlowManager : MonoBehaviour
         else
         {
             leftScoreCount++;
-            if (leftScoreCount > winCon || rightScoreCount > winCon)
+            if (leftScoreCount > winCon)
             {
+                Win();
                 UIanim.SetBool("Win", true);
                 win.text = nameRight.text + " WON!!";
                 ballManager.RestartPos();
@@ -81,6 +100,6 @@ public class GameFlowManager : MonoBehaviour
 
     void Win()
     {
-
+        AudioManager.instance.Play("Victory");
     }
 }

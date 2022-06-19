@@ -30,6 +30,7 @@ public class BallManager : MonoBehaviour
 
         if (collision.gameObject.tag == "Racket")
         {
+            AudioManager.instance.Play("Bounce");
             Vector2 Dir = new Vector2((transform.position.x - collision.gameObject.transform.position.x) * angleMultp, (transform.position.y - collision.gameObject.transform.position.y)*angleMultp);
             Dir.Normalize();
             rb.AddForce(Dir* forceAddOnHit);
