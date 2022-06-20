@@ -23,6 +23,7 @@ public class ZigZagMovement : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
+            AudioManager.instance.Play("Bounce");
             ChangeDirection();
         }
     }

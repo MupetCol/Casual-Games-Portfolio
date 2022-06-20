@@ -12,6 +12,7 @@ public class CollisionReset : MonoBehaviour
         Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, .05f);
         if (colliders.Length < 2)
         {
+            AudioManager.instance.Play("Pop");
             SceneManager.LoadScene(2);
         }
         
