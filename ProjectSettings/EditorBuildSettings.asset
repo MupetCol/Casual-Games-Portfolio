@@ -11,4 +11,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Pong/MainScene.unity
     guid: ce5c5c9833fe44a4b82976c56cf43a7f
+  - enabled: 1
+    path: Assets/Scenes/ZigZag/ZigZag.unity
+    guid: 73df218efc5e93c4391610933a3828aa
   m_configObjects: {}
