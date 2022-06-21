@@ -1,12 +1,19 @@
 using System.Collections;
 using UnityEngine.SceneManagement;
 using UnityEngine;
+using UnityEngine.Rendering;
 using TMPro;
 
 public class GameFlowManager : MonoBehaviour
 {
     [SerializeField]
+    Volume urpVolume;
+
+    [SerializeField]
     TMP_Text scoreLeft, scoreRight, win, nameLeft, nameRight;
+
+    [SerializeField]
+    TMP_InputField inputNameLeft, inputNameRight;
 
     [SerializeField]
     GameObject startPopUp;
@@ -24,11 +31,15 @@ public class GameFlowManager : MonoBehaviour
     bool isRight = false;
 
     int leftScoreCount = 0, rightScoreCount = 0;
+    UnityEngine.Rendering.Universal.LensDistortion lens;
+    float t = 0;
+    bool addTot = false;
 
     public delegate void OnScore(bool isRight);
     public static OnScore Scored;
     void Start()
     {
+        urpVolume.sharedProfile.TryGet<UnityEngine.Rendering.Universal.LensDistortion>(out lens);
         AudioManager.instance.Play("Music");
         ballManager = FindObjectOfType<BallManager>();
         Scored = SetScore;
@@ -37,16 +48,31 @@ public class GameFlowManager : MonoBehaviour
     private void Update()
     {
         ReloadScene();
+        if (addTot && t < 1)
+        {
+            t += Time.deltaTime;
+        }else if(!addTot && t > 0)
+        {
+            t -= Time.deltaTime;    
+        }
+
+        lens.intensity.value = Mathf.Lerp(0, -.3f, t);
+        lens.scale.value = Mathf.Lerp(1, .7f, t);
     }
 
     public void StartP()
     {
+      
         StartCoroutine(StartGame());
     }
 
     IEnumerator StartGame()
     {
+        addTot = true;
         startPopUp.SetActive(false);
+        nameRight.text = inputNameRight.text;
+        nameLeft.text = inputNameLeft.text;
+        yield return new WaitForSeconds(1f);
         ballManager.StartGame(true);
         yield return null;
     }
@@ -117,6 +143,7 @@ public class GameFlowManager : MonoBehaviour
         AudioManager.instance.Play("Victory");
         AudioManager.instance.StopPlaying("Music");
         yield return new WaitForSeconds(.84f);
+        addTot = false;
         UIRetry.SetBool("PopUp", true);
 
     }
