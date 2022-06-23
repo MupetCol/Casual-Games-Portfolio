@@ -7,19 +7,40 @@ public class CollisionReset : MonoBehaviour
 {
 
     private WinSequence lostSeq;
+    [SerializeField]
+    Transform[] hitSpots;
+
+    bool doFor = true;
+
 
     private void Start()
     {
         lostSeq = GetComponent<WinSequence>();
     }
-    private void OnTriggerExit2D(Collider2D collision)
+    //private void OnTriggerExit2D(Collider2D collision)
+    //{
+    //    Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, .01f);
+    //    if (colliders.Length < 2)
+    //    {
+    //        lostSeq.Lost();
+    //    }
+    //}
+
+    private void Update()
     {
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, .05f);
-        if (colliders.Length < 2)
+        if (doFor)
         {
-            lostSeq.Lost();
+            foreach (Transform t in hitSpots)
+            {
+                Collider2D[] colliders = Physics2D.OverlapCircleAll(t.position, .01f);
+                Debug.Log(colliders.Length);
+                if (colliders.Length < 2)
+                {
+                    lostSeq.Lost();
+                    doFor = false;
+                }
+            }
         }
-        
 
     }
 }

@@ -27,6 +27,9 @@ public class GameFlowManager : MonoBehaviour
     [SerializeField]
     int winCon = 5;
 
+    [SerializeField]
+    RacketMovement racket;
+
     BallManager ballManager;
     bool isRight = false;
 
@@ -47,7 +50,6 @@ public class GameFlowManager : MonoBehaviour
 
     private void Update()
     {
-        ReloadScene();
         if (addTot && t < 1)
         {
             t += Time.deltaTime;
@@ -62,17 +64,31 @@ public class GameFlowManager : MonoBehaviour
 
     public void StartP()
     {
-      
         StartCoroutine(StartGame());
+    }
+
+    public void ShowControlsP()
+    {
+        StartCoroutine(ShowControls());
+    }
+
+    IEnumerator ShowControls()
+    {
+        UIanim.SetBool("Controls_Pong", true);
+        yield return new WaitForSeconds(4f);
+        UIanim.SetBool("Controls_Pong", false);
     }
 
     IEnumerator StartGame()
     {
         addTot = true;
         startPopUp.SetActive(false);
-        nameRight.text = inputNameRight.text;
-        nameLeft.text = inputNameLeft.text;
+        nameRight.text = inputNameRight.text != "" ? inputNameRight.text : "RIGHT";
+        nameLeft.text = inputNameLeft.text != "" ? inputNameLeft.text : "LEFT";
         yield return new WaitForSeconds(1f);
+        UIanim.SetBool("Countdown", true);
+        yield return new WaitForSeconds(2.5f);
+        racket.SetStart();
         ballManager.StartGame(true);
         yield return null;
     }
@@ -131,9 +147,9 @@ public class GameFlowManager : MonoBehaviour
     public IEnumerator Restart()
     {
         ballManager.RestartPos();
-        UIanim.SetBool("Scored", true);
+        UIanim.SetBool("Countdown", true);
         yield return new WaitForSeconds(2.5f);
-        UIanim.SetBool("Scored", false);
+        UIanim.SetBool("Countdown", false);
         ballManager.StartGame(isRight);
 
     }

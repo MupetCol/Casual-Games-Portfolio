@@ -10,6 +10,12 @@ public class ZigZagMovement : MonoBehaviour
     Rigidbody2D rb;
     float zRot = 0;
     Vector2 movementDir;
+    bool Started = false;
+
+    public void SetStart()
+    {
+        Started = true;
+    }
 
     void Start()
     {
@@ -21,7 +27,7 @@ public class ZigZagMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) && Started)
         {
             AudioManager.instance.Play("Bounce");
             ChangeDirection();

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class WinSequence : MonoBehaviour
 {
@@ -10,13 +11,16 @@ public class WinSequence : MonoBehaviour
     [SerializeField]
     GameObject winPopUp, startPopUp;
 
+    [SerializeField]
+    TMP_Text text_retryText;
+
     private ZigZagMovement movement;
     private void Start()
     {
        movement = GetComponent<ZigZagMovement>();
     }
 
-    public void StartSequence()
+    public void StartWinSequence()
     {
         StartCoroutine(Win());
     }
@@ -26,14 +30,16 @@ public class WinSequence : MonoBehaviour
         StartCoroutine(Lose());
     }
 
-    public void StartCor()
+    public void StartGame()
     {
         StartCoroutine(SceneStart());
+        StartCoroutine(SpacebarAnim());
     }
 
     public IEnumerator Win()
     {
         movement.StopMoving();
+        text_retryText.text = "RESTART";
         UIAnimWL.SetBool("PopUp", true);
         winPopUp.SetActive(true);
         AudioManager.instance.Play("Victory");
@@ -50,11 +56,19 @@ public class WinSequence : MonoBehaviour
         yield return null;
     }
 
+    public IEnumerator SpacebarAnim()
+    {
+        UIAnimWL.SetBool("Controls_ZigZag", true);
+        yield return new WaitForSeconds(2.5f);
+        UIAnimWL.SetBool("Controls_ZigZag", false);
+    }
+
     public IEnumerator SceneStart()
     {
         startPopUp.SetActive(false);
-        UIAnimStart.SetBool("Scored", true);
+        UIAnimStart.SetBool("Countdown", true);
         yield return new WaitForSeconds(2.5f);
+        movement.SetStart();
         movement.speed = 3f;
     }
 }

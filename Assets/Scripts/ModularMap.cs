@@ -18,12 +18,9 @@ public class ModularMap : MonoBehaviour
     [SerializeField]
     Transform currentTileSpawnPoint;
 
-    Transform trophySpawnPoint;
-
     [SerializeField]
     GameObject tileR, tileL;
 
-    float counter = 0;
     bool tileType = true;
     void Start()
     {
@@ -49,14 +46,12 @@ public class ModularMap : MonoBehaviour
                 {
                     if (j % 2 == 0) SpawnTile(tileR, scaleX, s_MinRange, s_MaxRange);
                     else { SpawnTile(tileR, scaleX, s_MinRange, s_MaxRange / 2); }
-                    counter = 0;
                     tileType = false;
                 }
                 else
                 {
                     if (j % 2 != 0) SpawnTile(tileL, scaleX, s_MinRange, s_MaxRange);
                     else { SpawnTile(tileL, scaleX, s_MinRange, s_MaxRange / 2); }
-                    counter = 0;
                     tileType = true;
                 }
             }

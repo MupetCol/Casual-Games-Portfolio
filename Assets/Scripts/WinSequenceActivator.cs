@@ -12,7 +12,7 @@ public class WinSequenceActivator : MonoBehaviour
     {
         if (collision.gameObject.tag == "Player")
         {
-            collision.gameObject.GetComponent<WinSequence>().StartSequence();
+            collision.gameObject.GetComponent<WinSequence>().StartWinSequence();
         }
     }
 }

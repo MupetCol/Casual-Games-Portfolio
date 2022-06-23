@@ -12,6 +12,8 @@ public class RacketMovement : MonoBehaviour
     int racketSpeed = 10;
 
     Rigidbody2D rb;
+    static bool started = false;
+
 
     void Start()
     {
@@ -19,6 +21,10 @@ public class RacketMovement : MonoBehaviour
         rb.drag = 0;
     }
 
+    public void SetStart()
+    {
+        started = true;
+    }
     // Update is called once per frame
     void FixedUpdate()
     {
@@ -27,13 +33,17 @@ public class RacketMovement : MonoBehaviour
 
     void Move()
     {
-        if (playerOne)
+        if (started)
         {
-            rb.velocity = new Vector2(rb.velocity.x, Input.GetAxisRaw("VerticalArrows") * racketSpeed);
+            if (playerOne)
+            {
+                rb.velocity = new Vector2(rb.velocity.x, Input.GetAxisRaw("VerticalArrows") * racketSpeed);
+            }
+            else
+            {
+                rb.velocity = new Vector2(rb.velocity.x, Input.GetAxisRaw("VerticalKeys") * racketSpeed);
+            }
         }
-        else
-        {
-            rb.velocity = new Vector2(rb.velocity.x, Input.GetAxisRaw("VerticalKeys") * racketSpeed);
-        }
+
     }
 }

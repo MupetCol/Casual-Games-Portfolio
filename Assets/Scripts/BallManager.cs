@@ -24,7 +24,7 @@ public class BallManager : MonoBehaviour
         //General bounce on any surface
         if(collision.gameObject.layer == 1)
         {
-            rb.AddForce(-collision.GetContact(0).point * 15);
+            rb.AddForce(-collision.GetContact(0).point * 5);
         }
 
 
