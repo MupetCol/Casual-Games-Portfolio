@@ -1,2 +1,2 @@
 # ScriptingAPITestingUnity
- Studying and testing Unity scripting API in a 3D URP project template
+Testing new stuff in Unity while doing clones o famous casual games
